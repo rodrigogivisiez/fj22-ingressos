@@ -3,11 +3,14 @@ package br.com.caelum.ingresso.model;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Sessao {
@@ -23,6 +26,8 @@ public class Sessao {
 	@ManyToOne
 	private Filme filme;
 	
+	@OneToMany
+	private List<Ingresso> ingressos;
 	
 	private BigDecimal preco;
 	
@@ -81,5 +86,13 @@ public class Sessao {
 		// TODO Auto-generated method stub
 		return filme.getPreco().add(sala.getPreco());
 	}
-
+	public Map<String, List<Lugar>> getMapaDeLugares() {
+		// TODO Auto-generated method stub
+		return sala.getMapaDeLugares();
+	}
+	public boolean isDisponivel(Lugar lugar){
+		return ingressos.stream().map(Ingresso::getLugar).noneMatch(l-> l.equals(lugar));
+	}
+	
+	
 }
